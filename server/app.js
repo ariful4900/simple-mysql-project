@@ -14,12 +14,16 @@ app.use(express.urlencoded({extended: false}));
 
 
 app.get('/getAll', (req, res) => {
-    res.json({
-        success: true 
-    })
+    const db = dbServeice.getDbSerciveInstance()
+    const result = db.getAllData()
+    result
+        .then(data=>res.json({data: data}))
+        .catch(err=>{
+            console.log(err);
+        })
 });
 
-const port = process.env.PORT; 
+const port = process.env.PORT;   
 
 app.listen(port, ()=>{
     console.log(` Application is running on port ${port}`);
