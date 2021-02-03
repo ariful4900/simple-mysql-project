@@ -4,18 +4,19 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('http://localhost:5000/getAll')
         .then(res => res.json())
         .then(data => {
-            console.log(data);
+            loadHTMLTable(data['data'])
         })
         .catch(e => {
             console.log(e.message);
-        })
-
-    loadHTMLTable([])
+        });
+        loadHTMLTable([]);
 });
 
 const loadHTMLTable = (data) => {
 
     const table = document.querySelector('table tbody');
+
+    console.log(data);
 
     // let tableHTML = '';
     if (data.length === 0) {
