@@ -6,6 +6,8 @@ const app = express();
 
 const cors = require('cors');
 
+const dbServeice = require('./dbService')
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
@@ -13,7 +15,7 @@ app.use(express.urlencoded({extended: false}));
 
 app.get('/getAll', (req, res) => {
     res.json({
-        success: true
+        success: true 
     })
 });
 
