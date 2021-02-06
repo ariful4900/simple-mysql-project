@@ -12,31 +12,71 @@ document.addEventListener('DOMContentLoaded', () => {
     loadHTMLTable([]);
 });
 
-document.querySelector('table tbody').addEventListener('click', function(event){
-    if(event.target.className === 'delete-row-btn'){
+document.querySelector('table tbody').addEventListener('click', function (event) {
+    if (event.target.className === 'delete-row-btn') {
         deleteRowById(event.target.dataset.id)
+    }
+    if (event.target.className === 'edit-row-btn') {
+        handleEditRow(event.target.dataset.id)
     }
 });
 
-function deleteRowById(id){
-    fetch('http://localhost:5000/delete/' +id, {
+function deleteRowById(id) {
+    fetch('http://localhost:5000/delete/' + id, {
         method: 'DELETE'
     })
-    .then(res=>res.json())
-    .then(data=>{
-        if(data.success){
-            location.reload();
-        }
-    })
-    .catch(err=>{
-        console.log(err.message);
-    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        })
+        .catch(err => {
+            console.log(err.message);
+        })
 }
 
+//update One
+
+const updateBtn = document.querySelector('#update-row-btn');
+function handleEditRow(id) {
+    const updateSection = document.querySelector('#update-section')
+    updateSection.hidden = false;
+    document.querySelector('#update-name-input').dataset.id = id;
+}
+
+
+
+updateBtn.onclick = function () {
+    const updatenameInput = document.querySelector('#update-name-input');
+
+    fetch('http://localhost:5000/update' , {
+        
+        headers: {
+            'Content-type': 'application/json',
+        },
+        method: 'PATCH',
+        body: JSON.stringify({
+            id: updatenameInput.dataset.id,
+            name: updatenameInput.value,
+        })
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        })
+        // .catch(e => {
+        //     console.log(e.message);
+        // })
+}
+
+//Added data
 const addBtn = document.querySelector('#add-name-btn');
 
 addBtn.onclick = function () {
-    const nameInput = document.querySelector('#name-input');
+    const nameInput = document.querySelector('#name-input'); 
     const name = nameInput.value;
     nameInput.value = '';
 
@@ -70,10 +110,10 @@ const insertRowIntoTable = (data) => {
 
         }
     }
-    
+
     tableHTML += `<td><button class="edit-row-btn" data-id=${data.id}>Edit</button></td>`;
     tableHTML += `<td><button class="delete-row-btn" data-id=${data.id}>Delete</button></td>`;
-    
+
     tableHTML += `</tr>`
 
     if (isTableData) {

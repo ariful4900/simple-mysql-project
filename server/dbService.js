@@ -82,5 +82,24 @@ class DbService {
             return false
         }
     }
+    async updateNameById(id, name) {
+        try {
+            id = parseInt(id, 10)
+            const response = await new Promise((resolve, reject) => {
+                const query = "UPDATE namesAll SET name = ? WHERE id = ?";
+
+                connection.query(query, [name, id], (err, res) => {
+                    if (err) {
+                        reject(new Error(err.message));
+                    }
+                    resolve(res.affectedRows);
+                });
+            });
+            return response === 1 ? true : false;
+        } catch (e) {
+            console.log(e);
+            return false
+        }
+    }
 }
 module.exports = DbService;
