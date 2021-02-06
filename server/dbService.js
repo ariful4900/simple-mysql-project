@@ -101,5 +101,24 @@ class DbService {
             return false
         }
     }
+
+    async seachByName(name) {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                const query = "SELECT * FROM namesAll WHERE name = ? ;";
+
+                connection.query(query, [name], (err, res) => {
+                    if (err) {
+                        reject(new Error(err.message));
+                    }
+                    resolve(res);
+                })
+            })
+            // console.log(response);
+            return response
+        } catch (err) {
+            console.log(err);
+        }
+    }
 }
 module.exports = DbService;

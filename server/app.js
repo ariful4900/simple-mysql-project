@@ -65,6 +65,18 @@ app.delete('/delete/:id', (req, res) => {
         })
 })
 
+app.get('/search/:name', (req, res)=>{
+    const { name } = req.params;  
+    const db = dbServeice.getDbSerciveInstance();
+
+    const result = db.seachByName(name);
+    result
+        .then(data => res.json({ data: data }))
+        .catch(err => {
+            console.log(err);
+        })
+})
+
 const port = process.env.PORT;
 
 app.listen(port, () => {

@@ -36,6 +36,24 @@ function deleteRowById(id) {
         })
 }
 
+//Search
+
+const seachrBTn = document.querySelector('#search-btn');
+
+seachrBTn.onclick = function(){
+    const searchValue = document.querySelector('#search-input').value;
+
+    fetch('http://localhost:5000/search/' + searchValue)
+    .then(res => res.json())
+    .then(data => {
+        loadHTMLTable(data['data'])
+    })
+    .catch(e => {
+        console.log(e.message);
+    });
+
+}
+
 //update One
 
 const updateBtn = document.querySelector('#update-row-btn');
